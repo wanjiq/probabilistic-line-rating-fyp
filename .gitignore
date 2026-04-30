@@ -11,6 +11,3 @@ slprj/
 Results_Combined_*/
 Checkpoint_FULL.mat
 *.xlsx
-
-# Large data files
-*.mat
