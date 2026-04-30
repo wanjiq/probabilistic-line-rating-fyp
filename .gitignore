@@ -1,0 +1,16 @@
+# MATLAB temporary files
+*.asv
+*.m~
+*.mex*
+
+# MATLAB/Simulink generated folders
+slprj/
+*.slxc
+
+# Large simulation outputs
+Results_Combined_*/
+Checkpoint_FULL.mat
+*.xlsx
+
+# Large data files
+*.mat
