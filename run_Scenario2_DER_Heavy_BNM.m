@@ -1,4 +1,4 @@
-%% --- run_Scenario1_Baseline_BNM.m ---
+%% --- run_Scenario2_DER_Heavy_BNM.m ---
 clear; clc;
 t_start_sim = tic; 
 warning('off', 'all');
@@ -10,8 +10,8 @@ MAX_ITERATIONS = 200;
 lambda         = 1.20;    
 VOLL           = 1000;    
 LINE_PENALTY   = 5000;    
-scenario_name     = 'Scenario1_Baseline_BNM';                  
-current_wind_caps = [0, 0, 0]; % NO WIND
+scenario_name     = 'Scenario2_DER_Heavy_BNM';                  
+current_wind_caps = [400, 75, 75]; % DER Heavy (400MW at Bus 7)
 chosen_tmax    = 75;               
 EXCEEDANCE_SLR = 0.01;             
 
@@ -209,5 +209,5 @@ writetable([table(Iteration), array2table(w_curt_p15, 'VariableNames', WindNames
 
 elapsed_time = toc(t_start_sim);
 fprintf('\n======================================================\n');
-fprintf(' 🎉 SCENARIO 1 (BNM) COMPLETE WITH FULL TRACKING. Total Time: %.2f seconds\n', elapsed_time);
+fprintf(' 🎉 SCENARIO 2 (BNM) COMPLETE WITH FULL TRACKING. Total Time: %.2f seconds\n', elapsed_time);
 fprintf('======================================================\n');

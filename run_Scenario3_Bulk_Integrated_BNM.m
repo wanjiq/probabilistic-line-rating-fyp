@@ -1,4 +1,4 @@
-%% --- run_Scenario1_Baseline_BNM.m ---
+%% --- run_Scenario3_Bulk_Integrated_BNM.m ---
 clear; clc;
 t_start_sim = tic; 
 warning('off', 'all');
@@ -10,10 +10,22 @@ MAX_ITERATIONS = 200;
 lambda         = 1.20;    
 VOLL           = 1000;    
 LINE_PENALTY   = 5000;    
-scenario_name     = 'Scenario1_Baseline_BNM';                  
-current_wind_caps = [0, 0, 0]; % NO WIND
+scenario_name     = 'Scenario3_Bulk_Integrated_BNM';                  
+current_wind_caps = [75, 75, 400]; % Bulk Wind Heavy (400MW at Bus 21)
 chosen_tmax    = 75;               
 EXCEEDANCE_SLR = 0.01;             
+
+% =====================================================
+% 1.5 DISPLAY SIMULATION CONFIGURATION
+% =====================================================
+fprintf('\n======================================================\n');
+fprintf(' ⚙️ SIMULATION CONFIGURATION INITIALIZING...\n');
+fprintf('------------------------------------------------------\n');
+fprintf(' Scenario Name:    %s\n', scenario_name);
+fprintf(' Target Tmax:      %d °C\n', chosen_tmax);
+fprintf(' Baseline Risk:    %.2f%% (SLR Exceedance)\n', EXCEEDANCE_SLR);
+fprintf(' Wind Injection:   Bus 7 (%d MW) | Bus 13 (%d MW) | Bus 21 (%d MW)\n', current_wind_caps(1), current_wind_caps(2), current_wind_caps(3));
+fprintf('======================================================\n\n');
 
 % =====================================================
 % 2. INITIALIZATION
@@ -72,6 +84,16 @@ for s = 1:length(seasons)
     plr_limits.(s_lower).p10 = (sqrt(3) .* line_kV .* rating_from_exceedance(compiled_results.(s_name).I_list, compiled_results.(s_name).Pexc_mat(:, tmax_idx), 10.0)) ./ 1000;
     plr_limits.(s_lower).p15 = (sqrt(3) .* line_kV .* rating_from_exceedance(compiled_results.(s_name).I_list, compiled_results.(s_name).Pexc_mat(:, tmax_idx), 15.0)) ./ 1000;
 end
+
+fprintf('\n======================================================\n');
+fprintf(' RATINGS SUMMARY (Dynamic Limits Calculated)\n');
+fprintf('------------------------------------------------------\n');
+fprintf(' SLR Limit:   %.2f MVA\n', mean(SLR_MVA));
+for s = 1:length(seasons)
+    s_n = seasons{s}; s_l = lower(s_n);
+    fprintf(' PLR %-6s : P5=%.2f MVA | P10=%.2f MVA | P15=%.2f MVA\n', s_n, mean(plr_limits.(s_l).p5), mean(plr_limits.(s_l).p10), mean(plr_limits.(s_l).p15));
+end
+fprintf('======================================================\n');
 
 % =====================================================
 % 3. SIMULATION LOOP WITH FULL TRACKING
@@ -209,5 +231,5 @@ writetable([table(Iteration), array2table(w_curt_p15, 'VariableNames', WindNames
 
 elapsed_time = toc(t_start_sim);
 fprintf('\n======================================================\n');
-fprintf(' 🎉 SCENARIO 1 (BNM) COMPLETE WITH FULL TRACKING. Total Time: %.2f seconds\n', elapsed_time);
+fprintf(' 🎉 SCENARIO 3 (BNM) COMPLETE WITH FULL TRACKING. Total Time: %.2f seconds\n', elapsed_time);
 fprintf('======================================================\n');
