@@ -2,20 +2,22 @@
 
 The MATLAB simulations require the following input data files.
 
-## Required `.mat` Files
+## Required Data Files
 
 ### Grid_Study_Data.mat
 
-Contains the main grid study variables used by the simulation, including hourly load and seasonal information.
+This file contains the main grid study variables used by the simulation.
 
 Expected variables include:
 
 - `load_10yr_MW`
 - `Ttbl`
 
+The variable `load_10yr_MW` is used as the hourly load profile. The variable `Ttbl` is used to identify seasonal information for applying seasonal PLR values.
+
 ### All_Seasons_PLR_Dataset.mat
 
-Contains the seasonal probabilistic line rating dataset.
+This file contains the seasonal probabilistic line rating dataset.
 
 Expected variables include:
 
@@ -26,8 +28,16 @@ The `compiled_results` structure is used to obtain PLR ratings for different sea
 
 ### Custom_Wind_Profile.mat
 
-Contains the 10-year wind generation profile used to calculate hourly available wind generation.
+This file contains the 10-year wind generation profile used to calculate hourly available wind generation.
 
+Expected variable:
+
+- `P_Farm_300MW_10yr`
+
+The scenario scripts convert this 300 MW reference wind farm profile into a capacity factor using:
+
+```matlab
+cf = P_Farm_300MW_10yr(wind_start_hr + t) / 300;
 Expected variable:
 
 - `P_Farm_300MW_10yr`
