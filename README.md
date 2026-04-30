@@ -85,7 +85,7 @@ Each script represents a different renewable integration and network stress cond
 | Scenario 3 | `run_Scenario3_Bulk_Integrated_BNM.m` | Bulk-integrated renewable case with moderate transmission-level integration |
 | Scenario 4 | `run_Scenario4_Bulk_Extreme_BNM.m` | Extreme bulk renewable penetration case |
 | Scenario 5 | `run_Scenario5_Modern_Grid_BNM.m` | Modern-grid case with more balanced renewable integration |
-| Scenario 6 | `run_Scenario6_Bulk_Collapse_BNM.m` | Highly stressed bulk system case approaching severe network constraints |
+| Scenario 6 | `run_Scenario6_Bulk_Collapse_BNM.m` | Modern-grid with highly stressed bulk system case approaching severe network constraints |
 
 ---
 
