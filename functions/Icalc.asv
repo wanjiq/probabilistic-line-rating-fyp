@@ -1,0 +1,56 @@
+function I = Icalc(Tc, Ta, Wd, Vw, Qse, D0, eps, alpha, R25, R75, Z1)
+% Returns I_calc for trial conductor temperature Tc (°C)
+% Matches Excel phi logic: fold into [0,90] degrees
+
+%% --- Wind-to-line angle phi (Excel LET equivalent) ---
+d = abs(Wd - Z1);          % ABS(H2 - Z1)
+
+a = d;
+if a > 180
+    a = 360 - a;           % IF(d>180, 360-d, d)
+end
+
+phi = a;
+if phi > 90
+    phi = 180 - phi;       % IF(a>90, 180-a, a)
+end
+
+%% --- Wind angle factor (your chosen formula) ---
+Kangle = 1.194 - cosd(phi) + 0.194*cosd(2*phi) + 0.368*sind(2*phi);
+
+%% --- Film temperature ---
+Tfilm = 0.5*(Tc + Ta);
+
+%% --- Air properties (use SAME constants as Excel everywhere) ---
+mu  = 1.458e-6 * ((Tfilm + 273)^(3/2)) / (Tfilm + 383); % kg/(m*s)
+rho = 1.293 / (1 + 0.00367*Tfilm);                            % kg/m^3
+kf  = 0.02424 + 7.5477e-5*Tfilm - 4.407e-9*Tfilm^2;           % W/(m*C)
+
+%% --- Reynolds number ---
+Re = (D0 * rho * max(Vw,0)) / mu;
+
+dT = max(Tc - Ta, 0);
+
+%% --- Convection (max of natural + 2 forced) ---
+qcn = 3.645 * sqrt(rho) * (D0^0.75) * (dT^1.25);
+qc1 = Kangle * (1.01 + 1.35*(Re^0.52)) * kf * dT;
+qc2 = Kangle * 0.754 * (Re^0.6) * kf * dT;
+qc  = max([qcn qc1 qc2]);
+
+%% --- Radiation ---
+qr = 17.8 * D0 * eps * (((Tc+273.15)/100)^4 - ((Ta+273.15)/100)^4);
+
+%% --- Solar gain (W/m^2 -> W/m) ---
+qs = alpha * Qse * D0;
+
+%% --- Resistance at Tc (linear 25->75) ---
+R = R25 + (Tc - 25) * (R75 - R25) / (75 - 25);
+
+%% --- Heat balance -> current ---
+num = qc + qr - qs;
+if num <= 0 || R <= 0
+    I = 0;
+else
+    I = sqrt(num / R);
+end
+end
