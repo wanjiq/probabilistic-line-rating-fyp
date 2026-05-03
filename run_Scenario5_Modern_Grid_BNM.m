@@ -37,7 +37,7 @@ load('Grid_Study_Data.mat');
 load('All_Seasons_PLR_Dataset.mat'); 
 load('Custom_Wind_Profile.mat'); 
 
-% This will now create a brand new folder!
+
 folder_name = sprintf('Results_Combined_%s', scenario_name); 
 if ~exist(folder_name, 'dir'), mkdir(folder_name); end
 checkpoint_file = fullfile(folder_name, 'Checkpoint_FULL.mat');
