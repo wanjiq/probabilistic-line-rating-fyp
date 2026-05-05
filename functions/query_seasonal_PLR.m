@@ -34,7 +34,6 @@ if ~ismember(chosen_tmax, Tmax_list)
 end
 
 %% --- STEP 3: What Exceedance Level? ---
-% Now you can enter ANY number!
 fprintf('\n(You can enter ANY percentage now, e.g., 0.01, 5, 12.5)\n');
 chosen_ex = input('3) Enter Exceedance Level (%): ');
 
@@ -43,15 +42,15 @@ if chosen_ex <= 0 || chosen_ex > 100
 end
 
 %% --- RETRIEVE AND INTERPOLATE THE PLR ---
-% 1. Find which column corresponds to your chosen Tmax
+% 1. Find which column corresponds to chosen Tmax
 tmax_idx = find(Tmax_list == chosen_tmax);
 
 % 2. Extract the raw exceedance curve (Pexc) and the Current list (I_list)
 Pexc_curve = compiled_results.(safe_season).Pexc_mat(:, tmax_idx);
 I_list = compiled_results.(safe_season).I_list;
 
-% 3. Interpolate the exact rating using your external function
-% (Make sure rating_from_exceedance.m is in your folder!)
+% 3. Interpolate the exact rating using external function
+% (Make sure rating_from_exceedance.m is in your folder)
 plr_value = rating_from_exceedance(I_list, Pexc_curve, chosen_ex);
 
 fprintf('\n======================================================\n');
