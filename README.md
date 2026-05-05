@@ -42,7 +42,8 @@ FYP-PLR-Reliability-Code/
 ├── data_prep/
 │   ├── Data_Prep.m
 │   ├── Build_Wind_Profile.m
-│   └── calculate_seasonal_PLR_OneGo.m
+│   ├── calculate_seasonal_PLR_OneGo.m
+│   └── query_seasonal_PLR.m
 │
 ├── run_Scenario1_Baseline_BNM.m
 ├── run_Scenario2_DER_Heavy_BNM.m
@@ -105,7 +106,19 @@ Key parameters:
 
 **Output:** `All_Seasons_PLR_Dataset.mat` containing the full seasonal exceedance-based rating dataset used by all scenario scripts.
 
-**Required input:** `weather_10yr.xlsx` — same file used by `Build_Wind_Profile.m`.
+**Required input:** `weather_10yr.xlsx` — same file used by `Build_Wind_Profile.m`
+
+### Querying PLR Values — `query_seasonal_PLR.m`
+
+Once `All_Seasons_PLR_Dataset.mat` has been generated, you can use `query_seasonal_PLR.m` as a simple interactive tool to look up or interpolate a specific PLR value without re-running the full calculation.
+
+Run it in MATLAB and it will prompt you to enter:
+
+1. A season (e.g. `Summer`, `Winter`)
+2. A maximum conductor temperature in °C (e.g. `75`)
+3. An exceedance level in % (e.g. `5`, `0.01`, `12.5`)
+
+It will return the corresponding line rating in Amps. This is useful for quickly checking what rating a specific season, temperature limit, and risk level combination produces before committing to a full simulation run..
 
 ---
 
